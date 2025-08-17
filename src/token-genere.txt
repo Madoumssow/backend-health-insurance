@@ -1,0 +1,4 @@
+ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
+ //code générez:
+ 93e8fc1f32c22f28aa080d4305c8983afcfe6f14dda3e5e3e2e1eec8046b900e76ad6f7c824616fcf012d4105ea82c8657377900dd7fb4a7a4b90cf7a6dc6580V
