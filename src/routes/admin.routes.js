@@ -1,25 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const adminController = require('../controllers/admin.controller');
+const { protect, requireRoles } = require('../middlewares/auth.middleware');
+const { validatorAdminUser } = require('../middlewares/validate');
 
-// Route: /admin
-router.get('/api/admin/users', (req, res) => {
-    // Logic to fetch and return all users
-    res.json({ message: 'List of all users' });
-});
+// Toutes ces routes sont réservées aux admins
+// GET /api/admin/users
+router.get('/users', protect, requireRoles("admin"), adminController.getAllUsers);
+router.post('/users', protect, requireRoles("admin"), validatorAdminUser, adminController.createUser);
+router.put('/users/:id', protect, requireRoles("admin"), validatorAdminUser, adminController.updateUser);
+router.delete('/users/:id', protect, requireRoles("admin"), adminController.deleteUser); 
 
-router.post('/api/admin/users', (req, res) => {
-    // Logic to create a new <user></user>
-    res.json({ message: 'User created successfully' });
-});
-
-router.put('/api/admin/users/:id', (req, res) => {
-    // Logic to update an existing <user></user>
-    res.json({ message: 'User updated successfully' });
-});
-
-router.delete('/api/admin/users/:id', (req, res) => {
-    // Logic to delete an existing <user></user>
-    res.json({ message: 'User deleted successfully' });
-}); 
 
 module.exports = router;
