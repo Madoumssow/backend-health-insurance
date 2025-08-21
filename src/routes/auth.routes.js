@@ -1,42 +1,18 @@
 const express = require('express');
-const router = express.Router();    
+const router = express.Router(); 
+const authController = require('../controllers/auth.controller');
+const { protect } = require('../middlewares/auth.middleware');
+const errorHandler = require('../middlewares/errorHandler');
+const { validatorRegister, validatorLogin } = require('../middlewares/validate');   
 
-// Route: /auth
-router.post('/api/auth/login', (req, res) => {      
-    // Logic to handle user login
-    res.json({ message: 'User logged in successfully' });
-});
+// POST /api/auth/register
+router.post('/register', validatorRegister, authController.register); 
+router.post('/login', validatorLogin, authController.login);
+router.post('/logout', protect, authController.logout); 
+router.get('/refresh', authController.refresh);
+router.get('/me', protect, authController.me);
 
-router.post('/api/auth/register', (req, res) => {                    
-    // Logic to handle user registration
-    res.json({ message: 'User registered successfully' });
-}); 
-
-router.post('/api/auth/logout', (req, res) => {
-    // Logic to handle user logout
-    res.json({ message: 'User logged out successfully' });
-}); 
-
-router.get('/api/auth/refresh', (req, res) => {
-    // Logic to handle token refresh
-    res.json({ message: 'Token refreshed successfully' });
-});
-
-router.get('/api/auth/me', (req, res) => {
-    // Logic to fetch user details
-    res.json({ message: 'User details fetched successfully' });
-});
-
-router.put('/api/auth/me', (req, res) => {
-    // Logic to update user details
-    res.json({ message: 'User details updated successfully' });
-});
-
-router.delete('/api/auth/me', (req, res) => {
-    // Logic to delete user account
-    res.json({ message: 'User account deleted successfully' });
-});
-
-
+// Error handler
+router.use(errorHandler);
 
 module.exports = router;

@@ -1,8 +1,22 @@
 const { DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 module.exports = (sequelize) => {
         const User = sequelize.define('User', {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        username: {
+            type: DataTypes.STRING,
+            unique: true,
+            allowNull: false,
+            validate: {
+                len: [3, 30],  // Longueur minimale et maximale
+                isAlphanumeric: true,  // Doit être alphanumérique
+            }
+        },
         email: {
             type: DataTypes.STRING,
             unique: true,
@@ -15,9 +29,13 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        role: {
-            type: DataTypes.ENUM("user", "admin"),
-            defaultValue: "user",
+        roleId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references:{
+                model: 'roles',
+                key: 'id'
+            }
         },
         status: {
             type: DataTypes.ENUM("active", "blocked"),
@@ -40,5 +58,6 @@ module.exports = (sequelize) => {
         };
         return User;
 };
+
 
 

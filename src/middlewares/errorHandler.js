@@ -4,7 +4,7 @@ function errorHandler(err, req, res, next) {
 
     // Définir le statut HTTP et le message d'erreur
     const statusCode = err.statusCode || 500;
-    const message = err.message || "Erreur interne du serveur";
+    const message = err.message || "Internal Server Error";
 
     // Répondre avec le statut et le message d'erreur
     res.status(statusCode).json({
